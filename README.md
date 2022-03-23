@@ -1,6 +1,6 @@
 ### ENIGMA_TS structural imaging  pipeline 
 
-This pipeline derive from existing repository (https://github.com/npnl/ENIGMA-Wrapper-Scripts)
+This pipeline is based on existing repository and published ENIGMA pipelines (https://github.com/npnl/ENIGMA-Wrapper-Scripts)
 
-This pipeline fixed issue that tksurfer command has been removed for recent versions of FreeSurfer （6 and 7）
+This pipeline fixes issue that arose with tksurfer command being removed from recent versions of FreeSurfer （6 and 7）
 
