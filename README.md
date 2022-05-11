@@ -4,4 +4,4 @@ ENIGMA-TS pipelines to analyze structural brain MRI data (cortical and subcortic
 
 
 ## update 2_extractsubcortical_volumes.sh on 05/22/2022
-updates due to Freesurfer output change their variable names
+Updates due to Freesurfer output change their variable names
