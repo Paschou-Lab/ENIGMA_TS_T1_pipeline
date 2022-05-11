@@ -39,11 +39,11 @@ mkdir ${enigmadir}/outputs/subcortical #JA
 
 cd ${enigmadir}/outputs
 echo ${PWD}
-echo "SubjID,LLatVent,RLatVent,Lthal,Rthal,Lcaud,Rcaud,Lput,Rput,Lpal,Rpal,Lhippo,Rhippo,Lamyg,Ramyg,Laccumb,Raccumb,ICV" > subcortical/LandRvolumes.csv
+echo "SubjID,LLatVent,RLatVent,3Ventricle, 4Ventricle, Lthal,Rthal,Lcaud,Rcaud,Lput,Rput,Lpal,Rpal,Lhippo,Rhippo,Lamyg,Ramyg,Laccumb,Raccumb,BrainStem,ICV" > subcortical/LandRvolumes.csv
 for subj_id in `ls -d *subj*`
 do 
 	printf "%s,"  "${subj_id}" >> subcortical/LandRvolumes.csv  #JA
-	for x in Left-Lateral-Ventricle Right-Lateral-Ventricle Left-Thalamus-Proper Right-Thalamus-Proper Left-Caudate Right-Caudate Left-Putamen Right-Putamen Left-Pallidum Right-Pallidum Left-Hippocampus Right-Hippocampus Left-Amygdala Right-Amygdala Left-Accumbens-area Right-Accumbens-area 
+	for x in Left-Lateral-Ventricle Right-Lateral-Ventricle 3rd-Ventricle 4th-Ventricle Left-Thalamus Right-Thalamus Left-Caudate Right-Caudate Left-Putamen Right-Putamen Left-Pallidum Right-Pallidum Left-Hippocampus Right-Hippocampus Left-Amygdala Right-Amygdala Left-Accumbens-area Right-Accumbens-area Brain-Stem
 	do
 		printf "%g," `grep  ${x} ${subj_id}/stats/aseg.stats | awk '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
 	done
