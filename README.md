@@ -4,5 +4,9 @@ ENIGMA-TS pipelines to analyze structural brain MRI data (cortical and subcortic
 
 
 ## update 2_extractsubcortical_volumes.sh on 05/22/2022
-Because Freesurfer version 6 and 7 volume names are slightly different, we provide two transcripts (2_extractsubcortical_volumes_version6.sh and 2_extractsubcortical_volumes_version7.sh) to extract subcortical volumes. 
+Because Freesurfer version 6 and 7 variable names of subcortical volume are slightly different, we provide two transcripts (2_extractsubcortical_volumes_version6.sh and 2_extractsubcortical_volumes_version7.sh) to extract subcortical volumes.
+ 
+Please check you Freesurfer version before running extractsubcortical_volumes transcript.
+ 
+If you still have problem, feel free to contact me anytime (jin368@purdue.edu). 
 
