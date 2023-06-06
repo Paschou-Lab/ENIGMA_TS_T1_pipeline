@@ -83,7 +83,7 @@ done
 # Create QC webpage
 cd ${enigmadir}/outputs/subcortical/QC
 
-chmod 777 make_subcortical_ENIGMA_QC_webpage.sh  #JA
+chmod 777 ${enigmadir}/enigma_wrapscripts/bash/make_subcortical_ENIGMA_QC_webpage.sh  #JA
 ${enigmadir}/enigma_wrapscripts/bash/make_subcortical_ENIGMA_QC_webpage.sh ${enigmadir}/outputs/subcortical/QC  #JA
 
 
