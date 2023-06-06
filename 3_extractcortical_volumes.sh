@@ -23,7 +23,7 @@ enigmadir=$1
 if [ -z ${enigmadir} ] || [ $# -gt 1 ] ; then
 
 	echo "One input directory must be specified"
-	echo "Usage is: ./2_extractcortical_volumes.sh <parent directory of project>"
+	echo "Usage is: ./3_extractcortical_volumes.sh <parent directory of project>"
 	exit
 fi
 
@@ -110,7 +110,7 @@ ${enigmadir}/enigma_wrapscripts/bash/make_cortical_ENIGMA_QC_webpage.sh ${enigma
 
 ###
 # External Surface Method
-external_dir=${enigmadir}//outputs/cortical/QC_cortical_external
+external_dir=${enigmadir}/outputs/cortical/QC_cortical_external
 mkdir ${external_dir}
 
 
