@@ -97,9 +97,11 @@ export qcdir=${enigmadir}/outputs/cortical/QC
 
 for x in `ls -d ${fsdir}/sub* | grep -v ".*/subcortical$"`
 do
-	export sub=`basename ${x}`
-	echo ${sub}
-	matlab  -nosplash < ${enigmadir}/enigma_wrapscripts/Matlab/create_pngs_cortical.m
+	if [ -s "${x}/stats/aseg.stats" ] && [ -s "${x}/stats/lh.aparc.stats" ] && [ -s "${x}/stats/rh.aparc.stats" ]; then
+		export sub=`basename ${x}`
+		echo ${sub}
+		matlab  -nosplash < ${enigmadir}/enigma_wrapscripts/Matlab/create_pngs_cortical.m
+	fi
 done
 
 # Create QC webpage
