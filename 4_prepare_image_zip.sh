@@ -45,4 +45,12 @@ echo "Saving images to zip file "${zipfile}
 
 zip -r ${zipfile} . -i \*brainmask.mgz
 
+# Remove images if Freesurfer did not complete
+for subj_id in `ls -d sub* | grep -v "^subcortical$"`
+do 
+	if [ ! -s "${subj_id}/stats/aseg.stats" ] || [ ! -s "${subj_id}/stats/lh.aparc.stats" ] || [ ! -s "${subj_id}/stats/rh.aparc.stats" ]; then
+		zip -d ${zipfile} ${subj_id}/mri/brainmask.mgz
+	fi
+done
+
 exit 0
