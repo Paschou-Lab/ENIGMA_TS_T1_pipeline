@@ -23,7 +23,7 @@ zipname=${2}
 if [ -z ${enigmadir} ] || [ $# -gt 2 ] ; then
 
 	echo "One directory must be specified"
-	echo "Usage is: ./4_prepare_image_zip.sh <parent directory of project> <zip file name>"
+	echo "Usage is: ./4_prepare_results_zip.sh <parent directory of project> <zip file name>"
 	exit
 fi
 
