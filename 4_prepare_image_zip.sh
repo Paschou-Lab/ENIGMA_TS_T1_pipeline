@@ -41,7 +41,7 @@ zipfile=${enigmadir}"/outputs/"$(basename ${zipname} | sed 's/\.zip//')".zip"
 cd ${enigmadir}/outputs
 echo ${PWD}
 
-echo "Saving images to zip file "${zipfile}
+echo "Saving images and stats to zip file "${zipfile}
 
 zip -r ${zipfile} . -i \*brainmask.mgz
 
@@ -49,7 +49,10 @@ zip -r ${zipfile} . -i \*brainmask.mgz
 for subj_id in `ls -d sub* | grep -v "^subcortical$"`
 do 
 	if [ ! -s "${subj_id}/stats/aseg.stats" ] || [ ! -s "${subj_id}/stats/lh.aparc.stats" ] || [ ! -s "${subj_id}/stats/rh.aparc.stats" ]; then
+		echo "WARNING: There were stats files missing for ${subj_id}, removing their images from the zip file."
 		zip -d ${zipfile} ${subj_id}/mri/brainmask.mgz
+	else
+		zip -u -r ${zipfile} ${subj_id}/stats
 	fi
 done
 
