@@ -43,16 +43,14 @@ echo ${PWD}
 
 echo "Saving images and stats to zip file "${zipfile}
 
-zip -r ${zipfile} . -i \*brainmask.mgz
-
+zip -r ${zipfile} . -i \*brainmask.mgz -i \*.stats -x \*fsaverage\*
+ 
 # Remove images if Freesurfer did not complete
 for subj_id in `ls -d sub* | grep -v "^subcortical$"`
 do 
 	if [ ! -s "${subj_id}/stats/aseg.stats" ] || [ ! -s "${subj_id}/stats/lh.aparc.stats" ] || [ ! -s "${subj_id}/stats/rh.aparc.stats" ]; then
-		echo "WARNING: There were stats files missing for ${subj_id}, removing their images from the zip file."
-		zip -d ${zipfile} ${subj_id}/mri/brainmask.mgz
-	else
-		zip -u -r ${zipfile} ${subj_id}/stats
+		echo "WARNING: There were stats files missing for ${subj_id}, removing their data from the zip file."
+		zip -d ${zipfile} ${subj_id}/\*
 	fi
 done
 
