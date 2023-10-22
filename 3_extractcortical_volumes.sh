@@ -110,7 +110,7 @@ ${enigmadir}/enigma_wrapscripts/bash/make_cortical_ENIGMA_QC_webpage.sh ${enigma
 
 ###
 # External Surface Method
-external_dir=${enigmadir}//outputs/cortical/QC_cortical_external
+external_dir=${enigmadir}/outputs/cortical/QC_cortical_external
 mkdir ${external_dir}
 
 
