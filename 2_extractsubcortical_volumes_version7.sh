@@ -40,16 +40,19 @@ mkdir ${enigmadir}/outputs/subcortical #JA
 cd ${enigmadir}/outputs
 echo ${PWD}
 echo "SubjID,LLatVent,RLatVent,3Ventricle, 4Ventricle, Lthal,Rthal,Lcaud,Rcaud,Lput,Rput,Lpal,Rpal,Lhippo,Rhippo,Lamyg,Ramyg,Laccumb,Raccumb,BrainStem,ICV" > subcortical/LandRvolumes.csv
-for subj_id in `ls -d *subj*`
+for subj_id in `ls -d sub* | grep -v "^subcortical$"`
 do 
-	printf "%s,"  "${subj_id}" >> subcortical/LandRvolumes.csv  #JA
-	for x in Left-Lateral-Ventricle Right-Lateral-Ventricle 3rd-Ventricle 4th-Ventricle Left-Thalamus Right-Thalamus Left-Caudate Right-Caudate Left-Putamen Right-Putamen Left-Pallidum Right-Pallidum Left-Hippocampus Right-Hippocampus Left-Amygdala Right-Amygdala Left-Accumbens-area Right-Accumbens-area Brain-Stem
-	do
-		printf "%g," `grep  ${x} ${subj_id}/stats/aseg.stats | awk '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
-	done
+	# only add to report if aseg.stats exists
+	if [ -s "${subj_id}/stats/aseg.stats" ]; then
+		printf "%s,"  "${subj_id}" >> subcortical/LandRvolumes.csv  #JA
+		for x in Left-Lateral-Ventricle Right-Lateral-Ventricle 3rd-Ventricle 4th-Ventricle Left-Thalamus Right-Thalamus Left-Caudate Right-Caudate Left-Putamen Right-Putamen Left-Pallidum Right-Pallidum Left-Hippocampus Right-Hippocampus Left-Amygdala Right-Amygdala Left-Accumbens-area Right-Accumbens-area Brain-Stem
+		do
+			printf "%g," `grep  ${x} ${subj_id}/stats/aseg.stats | awk '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
+		done
 	
-	printf "%g" `cat ${subj_id}/stats/aseg.stats | grep IntraCranialVol | awk -F, '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
-	echo "" >> subcortical/LandRvolumes.csv  #JA
+		printf "%g" `cat ${subj_id}/stats/aseg.stats | grep IntraCranialVol | awk -F, '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
+		echo "" >> subcortical/LandRvolumes.csv  #JA
+	fi
 done
 
 ###############
@@ -72,11 +75,14 @@ export mdir=${enigmadir}/enigma_wrapscripts/Matlab
 export fsdir=${enigmadir}/outputs
 export qcdir=${enigmadir}/outputs/subcortical/QC  #JA
 
-for x in `ls -d ${fsdir}/*subj*`
+for x in `ls -d ${fsdir}/sub* | grep -v ".*/subcortical$"`
 do
-	export sub=`basename ${x}`
-	echo ${sub}
+	# only add to report if aseg.stats exists
+	if [ -s "${x}/stats/aseg.stats" ]; then
+		export sub=`basename ${x}`
+		echo ${sub}
 	    matlab  -nosplash < ${enigmadir}/enigma_wrapscripts/Matlab/create_pngs_subcortical.m
+	fi
 done
 
 #################

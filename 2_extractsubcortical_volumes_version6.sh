@@ -40,16 +40,19 @@ mkdir ${enigmadir}/outputs/subcortical #JA
 cd ${enigmadir}/outputs
 echo ${PWD}
 echo "SubjID,LLatVent,RLatVent,Lthal,Rthal,Lcaud,Rcaud,Lput,Rput,Lpal,Rpal,Lhippo,Rhippo,Lamyg,Ramyg,Laccumb,Raccumb,ICV" > subcortical/LandRvolumes.csv
-for subj_id in `ls -d *subj*`
+for subj_id in `ls -d sub* | grep -v "^subcortical$"`
 do 
-	printf "%s,"  "${subj_id}" >> subcortical/LandRvolumes.csv  #JA
-	for x in Left-Lateral-Ventricle Right-Lateral-Ventricle Left-Thalamus-Proper Right-Thalamus-Proper Left-Caudate Right-Caudate Left-Putamen Right-Putamen Left-Pallidum Right-Pallidum Left-Hippocampus Right-Hippocampus Left-Amygdala Right-Amygdala Left-Accumbens-area Right-Accumbens-area 
-	do
-		printf "%g," `grep  ${x} ${subj_id}/stats/aseg.stats | awk '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
-	done
-	
-	printf "%g" `cat ${subj_id}/stats/aseg.stats | grep IntraCranialVol | awk -F, '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
-	echo "" >> subcortical/LandRvolumes.csv  #JA
+	# only add to report if aseg.stats exists
+	if [ -s "${subj_id}/stats/aseg.stats" ]; then
+		printf "%s,"  "${subj_id}" >> subcortical/LandRvolumes.csv  #JA
+		for x in Left-Lateral-Ventricle Right-Lateral-Ventricle Left-Thalamus-Proper Right-Thalamus-Proper Left-Caudate Right-Caudate Left-Putamen Right-Putamen Left-Pallidum Right-Pallidum Left-Hippocampus Right-Hippocampus Left-Amygdala Right-Amygdala Left-Accumbens-area Right-Accumbens-area 
+		do
+			printf "%g," `grep  ${x} ${subj_id}/stats/aseg.stats | awk '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
+		done
+		
+		printf "%g" `cat ${subj_id}/stats/aseg.stats | grep IntraCranialVol | awk -F, '{print $4}'` >> subcortical/LandRvolumes.csv  #JA
+		echo "" >> subcortical/LandRvolumes.csv  #JA
+	fi
 done
 
 ###############
@@ -77,13 +80,16 @@ read resp
 if [ ${resp} == "y" ]; then
 	for img in `more jnk2.txt`
 	do 
-		echo $img 
-		cd ${enigmadir}/outputs/$img/mri/
-		mri_convert --out_orientation RAS --in_type mgz --out_type nii T1.mgz T1.nii ; 
-		mri_convert --out_orientation RAS --in_type mgz --out_type nii aseg.mgz aseg.nii ; 
-		more $hd/jnk.txt | grep $img
-		fslview T1.nii aseg.nii -t 0.2 -l "MGH-Subcortical"; 
-		rm *.nii
+		# only add to report if aseg.stats exists
+		if [ -s "${x}/stats/aseg.stats" ]; then
+			echo $img 
+			cd ${enigmadir}/outputs/$img/mri/
+			mri_convert --out_orientation RAS --in_type mgz --out_type nii T1.mgz T1.nii ; 
+			mri_convert --out_orientation RAS --in_type mgz --out_type nii aseg.mgz aseg.nii ; 
+			more $hd/jnk.txt | grep $img
+			fslview T1.nii aseg.nii -t 0.2 -l "MGH-Subcortical"; 
+			rm *.nii
+		fi
 	done
 fi
 
@@ -96,7 +102,7 @@ export mdir=${enigmadir}/enigma_wrapscripts/Matlab
 export fsdir=${enigmadir}/outputs
 export qcdir=${enigmadir}/outputs/subcortical/QC  #JA
 
-for x in `ls -d ${fsdir}/*subj*`
+for x in `ls -d ${fsdir}/sub* | grep -v ".*/subcortical$"`
 do
 	export sub=`basename ${x}`
 	echo ${sub}
@@ -107,5 +113,5 @@ done
 # Create QC webpage
 cd ${enigmadir}/outputs/subcortical/QC
 
-chmod 777 make_subcortical_ENIGMA_QC_webpage.sh  #JA
+chmod 777 ${enigmadir}/enigma_wrapscripts/bash/make_subcortical_ENIGMA_QC_webpage.sh  #JA
 ${enigmadir}/enigma_wrapscripts/bash/make_subcortical_ENIGMA_QC_webpage.sh ${enigmadir}/outputs/subcortical/QC  #JA
